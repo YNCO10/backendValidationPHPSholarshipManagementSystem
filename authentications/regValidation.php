@@ -32,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     if(count($applicantUser) > 0){
         echo json_encode([
         "status" => "error",
-        "message" => "You already have an Admin account."
+        "message" => "You already have an Applicant account."
     ]);
     exit;
     }

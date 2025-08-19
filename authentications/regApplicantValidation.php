@@ -63,6 +63,20 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         ]);
         exit;
     }
+    else{
+        $query2 = "SELECT * FROM applicant WHERE phone_num = ?";
+        $result2 = $db->select($query2, [$phoneNum]);
+
+        if(count($result2) > 0){
+            if (ob_get_length()) { ob_clean(); }
+            echo json_encode([
+            "status"=>"error",
+            "message"=>"Phone Number already exists"
+            ]);
+            exit;
+        }
+    }
+    
 
     // HASH PASS
     $hashed_pass = password_hash($pass_word, PASSWORD_DEFAULT);
