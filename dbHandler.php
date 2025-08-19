@@ -41,6 +41,7 @@ class database{
         return $this->conn;
     }
 
+    // select///////////////////////////////////////////////////////////////
     public function select($query, $params = [], $types = "") {
 
         $stmt = $this->conn->prepare($query);
@@ -76,6 +77,7 @@ class database{
     }
     
 
+    // multitask exec fun////////////////////////////////////////////////////
     public function execute($query, $params = [], $types = ""){
         try{
             // prepare statement

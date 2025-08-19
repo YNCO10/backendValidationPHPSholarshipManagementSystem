@@ -7,8 +7,9 @@ ini_set('display_errors', 1);
 // force json output
 header('Content-Type: application/json');
 
-
+ob_start();
 require_once "C:/XAMPP/htdocs/BackEnd/scholarshipManagement/dbHandler.php";
+ob_end_clean();
 
 $db = new database();
 $conn = $db->connectToDatabase();
@@ -25,8 +26,11 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $phoneNum = $_POST["phone_number"] ?? "";
     $age = $_POST["age"] ?? "";
 
+    $pass_word = (string) $pass_word; 
+    $pass_word = trim($pass_word);
 
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        if (ob_get_length()) { ob_clean(); } 
         echo json_encode([
         "status" => "error",
         "message" => "Invalid email format."
@@ -34,11 +38,25 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         exit;
     }
 
+// check if user is an admin
+    $isAdmin = "SELECT * FROM `admin` WHERE email = ?";
+    $adminUser = $db->select($isAdmin, [$email]);
 
+    if(count($adminUser) > 0){
+        if (ob_get_length()) { ob_clean(); } 
+        echo json_encode([
+        "status" => "error",
+        "message" => "You already have an Admin account."
+        ]);
+        exit;
+    }
+
+// check if acc exists
     $query = "SELECT * FROM `applicant` WHERE email = ?";
     $result = $db->select($query, [$email]);   
 
     if(count($result)>0){
+        if (ob_get_length()) { ob_clean(); } 
         echo json_encode([
             "status"=>"error",
             "message"=>"Email already exists"
@@ -50,7 +68,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $hashed_pass = password_hash($pass_word, PASSWORD_DEFAULT);
 
     // INSERT USER
-    $query = "INSERT INTO `applicant` (`name`, `email`, pass_word, `age`, phone_num, `gender`, `nationality`, education_level, dob) VALUES (?,?,?,?,?,?,?,?,?)";
+    $query = "INSERT INTO `applicant` (`name`, `email`, `pass_word`, `age`, `phone_num`, `gender`, `nationality`, `education_level`, `dob`) VALUES (?,?,?,?,?,?,?,?,?)";
     $insertedValues = $db->execute(
         $query,
         [
@@ -59,21 +77,27 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     );
 
     if($insertedValues){
+        if (ob_get_length()) { ob_clean(); } 
         echo json_encode([
             "status" => "success",
             "message" => "Registration successful"
             ]
         );
+        exit;
     }
     else {
+        if (ob_get_length()) { ob_clean(); } 
         echo json_encode([
             "status" => "error",
-            "message" => "Registration failed"
+            "message" => "Regstration Failed"
         ]);
+        exit;
     }
+    
         
 }
 else{
+    if (ob_get_length()) { ob_clean(); } 
     echo json_encode([
         "status" => "error", 
         "message" => "Invalid request method"

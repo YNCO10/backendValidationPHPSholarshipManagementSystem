@@ -15,7 +15,7 @@ $conn = $db->connectToDatabase();
 if($_SERVER["REQUEST_METHOD"]==="POST"){
     $name = $_POST["name"] ?? "";
     $email = $_POST["email"] ?? "";
-    $pass_word = $_POST["pass_word"] ?? "";
+    $pass_word = $_POST["pass"] ?? "";
 
 
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -25,9 +25,20 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     ]);
     exit;
     }
+    // check if user is an applicant
+    $isApplicant = "SELECT * FROM `applicant` WHERE email = ?";
+    $applicantUser = $db->select($isApplicant, [$email]);
+
+    if(count($applicantUser) > 0){
+        echo json_encode([
+        "status" => "error",
+        "message" => "You already have an Admin account."
+    ]);
+    exit;
+    }
 
 
-
+// check if acc exists
     $query = "SELECT * FROM `admin` WHERE email = ?";
     $result = $db->select($query, [$email]);
 
