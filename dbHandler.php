@@ -105,10 +105,11 @@ class database{
                 $stmt->bind_param($types,...$params);
                 }
         
-            $success = $stmt->execute();
+            $stmt->execute();
+            $rowsAffected = $stmt->affected_rows;
             $stmt->close();
 
-            return $success;
+            return $rowsAffected;
         }
         catch(Exception $e){
             echo json_encode([

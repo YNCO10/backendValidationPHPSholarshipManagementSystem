@@ -7,9 +7,9 @@ ini_set('display_errors', 1);
 // force json output
 header('Content-Type: application/json');
 
-ob_start();
+
 require_once "C:/XAMPP/htdocs/BackEnd/scholarshipManagement/dbHandler.php";
-ob_end_clean();
+
 
 $db = new database();
 $conn = $db->connectToDatabase();
@@ -90,7 +90,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         ]
     );
 
-    if($insertedValues){
+    if($insertedValues > 0){
         if (ob_get_length()) { ob_clean(); } 
         echo json_encode([
             "status" => "success",

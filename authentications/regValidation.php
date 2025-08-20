@@ -59,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $insertedValues = $db->execute($query, [$name, $email, $hashed_pass]);
 
 
-    if($insertedValues){
+    if($insertedValues > 0){
         echo json_encode([
             "status" => "success",
             "message" => "Registration successful"
