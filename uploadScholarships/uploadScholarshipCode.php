@@ -15,12 +15,43 @@ $db = new database();
 $conn = $db->connectToDatabase();
 
 if($_SERVER["REQUEST_METHOD"]==="POST"){
-    $filename = $_POST["filename"] ?? "";
-    $descrip = $_POST["descrip"] ?? "";
+    $filename = $_POST["name"] ?? "";
+    $type =$_POST["type"] ?? "";
     $deadline = $_POST["deadline"] ?? "";
+    $descrip = $_POST["descrip"] ?? "";
     $email = $_POST["email"] ?? "";
+    $provider = $_POST["provider"] ?? "";
+    $subject = $_POST["subject"] ?? "";
+    $financialAmount = $_POST["financialAmount"] ?? "";
+    $link = $_POST["applicationLink"] ?? "";
+    $providerEmail = $_POST["providerEmail"] ?? "";
+    $selectedPerks = $_POST["perks"] ?? "";
 
-    if(isset($_FILES["document"])){
+// // ARRAY TO LOOP N CHECK EMPTY STRINGS
+//     $required = [
+//     "type" => $type,
+//     "descrip" => $descrip,
+//     "deadline" => $deadline,
+//     "filename" => $filename,
+//     "email" => $email,
+//     "provider" => $provider,
+//     "subject" => $subject,
+//     "financialAmount" => $financialAmount,
+//     "applicationLink" => $link,
+//     "providerEmail" => $providerEmail
+//     ];
+
+//     foreach ($required as $field => $value) {
+//         if (empty($value)) {
+//             echo json_encode(["status" => "error", "message" => "$field empty"]);
+//             exit;
+//         }
+//     }
+
+
+
+
+    if(isset($_FILES["document"])){//this is the file path
         $storageDir = __DIR__ . "/docs/uploadedFiles/";
 
         // create folder if it doesn't exist
@@ -51,23 +82,98 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
 
             try{
                 // insert data into db
-                $query = "INSERT INTO scholarships (`name`, `type`, `file_path`, `admin_id`, `deadline`) VALUES (?,?,?,?,?)";
+                $query = "INSERT INTO scholarships (
+                `name`, 
+                `type`, 
+                `file_path`, 
+                `admin_id`, 
+                `deadline`,
+                `descrip`,
+                `provider`,
+                `financial_amount`,
+                `applicantion_link`,
+                `provider_email`,
+                `subject`
+                ) 
+                VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
-                $insertedValues = $db->execute($query, [$filename, $descrip, $path, $adminId[0]["id"], $deadline]);
+                $insertedValues = $db->execute(
+                    $query, 
+                    [
+                        $filename, 
+                        $type, 
+                        $path, 
+                        $adminId[0]["id"], 
+                        $deadline,
+                        $descrip,
+                        $provider,
+                        $financialAmount,
+                        $link,
+                        $providerEmail,
+                        $subject
+                    ]
+                );
 
                 if($insertedValues > 0){
-                
+                    if(empty($selectedPerks) || $selectedPerks ==="[]"){
+                        echo json_encode([
+                        "status"=>"success", 
+                        "message"=>"File uploaded Successfully with no percs."
+                        ]);
+                        exit;
+                    }
+
+                    $scholsrshipID = $conn->insert_id;
+
+                    $perkArray = is_array($selectedPerks) ? $selectedPerks : json_decode($selectedPerks, true);
+
+                    if(empty($perkArray)){
+                        echo json_encode([
+                        "status"=>"error", 
+                        "message"=>"Perk Array is empty. Did you select any scholarship benefits?"
+                        ]);
+                        exit;
+                    
+                    }
+                    // var_dump($perkArray);
+                    // for each perk in the perk arrary
+                    foreach($perkArray as $perk){
+                        // select the id for that perk
+                        $query = "SELECT perk_id FROM perks WHERE perk_name = ?";
+                        $perkResult = $db->select($query, [$perk]);
+
+                        if(count($perkResult) > 0){
+                            // if it exists we reuse the id
+                            $perkID = $perkResult[0]["perk_id"];
+                        }
+                        else {
+                            // else we insert the new entry an extract id from it
+                            $query = "INSERT INTO perks (perk_name) VALUES (?)";
+                            $db->execute($query, [$perk]);
+                            $perkID = $db->getLastInsertId(); 
+                        }
+
+                        // then we link scholarship to it's perk
+                        $query = "INSERT INTO sholarship_perks (scholarship_id, perk_id) VALUES (?,?)";
+                        $db->execute($query, [$scholsrshipID, $perkID]);
+
+                        // echo "Processing perk: $perk\n";
+
+                    }
                     echo json_encode([
-                    "status"=>"success",
-                    "message"=>"Scholarship uploaded successfuly"
+                        "status"=>"success", 
+                        "message"=>"File uploaded Successfully."
                     ]);
+                    exit;
+                    
                 }
                 else{
-                    if (ob_get_length()) { ob_clean(); }
-                        echo json_encode([
-                            "status"=>"error", 
-                            "message"=>"File Upload Failed"
-                        ]);
+                    
+                    echo json_encode([
+                        "status"=>"error", 
+                        "message"=>"File Upload Failed(scholarTbl)"
+                    ]);
+                    exit;
                 }
 
             }
@@ -76,6 +182,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                     "status"=>"error",
                     "message"=>"Exception error:". $e
                 ]);
+                exit;
             }
         }
     }
@@ -85,6 +192,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                 "status" => "error", 
                 "message" => "No file recieved"
             ]);
+            exit;
     }
 
 }
@@ -95,5 +203,4 @@ else{
             "message" => "Invalid request method"
         ]);
 }
-
 ?>

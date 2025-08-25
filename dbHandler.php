@@ -119,6 +119,11 @@ class database{
         }
     }
 
+    public function getLastInsertId() {
+    return $this->conn->insert_id;
+}
+
+
     public function close(){
         if($this->conn){
             $this->conn->close();
