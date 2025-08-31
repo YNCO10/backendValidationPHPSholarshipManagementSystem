@@ -9,6 +9,8 @@ header('Content-Type: application/json');
 
 
 require_once "C:/XAMPP/htdocs/BackEnd/scholarshipManagement/dbHandler.php";
+require_once "C:/XAMPP/htdocs/BackEnd/scholarshipManagement/authentications/sendMail.php";
+
 $db = new database();
 $conn = $db->connectToDatabase();
 
@@ -33,8 +35,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         echo json_encode([
         "status" => "error",
         "message" => "You already have an Applicant account."
-    ]);
-    exit;
+        ]);
+        exit;
     }
 
 
@@ -50,26 +52,33 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         exit;
     }
 
-    // HASH PASS
+    // HASH PASS & TOKEN
     $hashed_pass = password_hash($pass_word, PASSWORD_DEFAULT);
+    $token = bin2hex(random_bytes(16));
 
 
     // insert user
-    $query = "INSERT INTO `admin` (`name`, `email`, `pass_word`) VALUES (?,?,?)";
-    $insertedValues = $db->execute($query, [$name, $email, $hashed_pass]);
+    $query = "INSERT INTO `admin` (`name`, `email`, `pass_word`, verify_token) VALUES (?,?,?,?)";
+    $insertedValues = $db->execute($query, [$name, $email, $hashed_pass, $token]);
 
 
     if($insertedValues > 0){
-        echo json_encode([
+
+        if(sendEmail($email, $token)){
+            echo json_encode([
             "status" => "success",
-            "message" => "Registration successful"
-        ]);
+            "message" => "We have sent a verification code to your Email."
+            ]);
+            exit;
+        }
+
     }
     else {
         echo json_encode([
             "status" => "error",
             "message" => "Registration failed"
         ]);
+        exit;
     }
 
 }
@@ -79,5 +88,5 @@ else {
         "message" => "Invalid request method"
     ]);
 }
-$db->close()
+$db->close();
 ?>
