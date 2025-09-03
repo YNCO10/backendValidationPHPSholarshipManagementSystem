@@ -1,0 +1,21 @@
+﻿category,question_txt,option_a,option_b,option_c,option_d,ans
+critical,"If evidence contradicts your belief, should you re-evaluate your belief?",Yes,No,,,a
+critical,Can two people look at the same set of facts and reach different valid conclusions?,Yes,No,,,a
+critical,"If an argument has false premises, can it still be valid?",Yes,No,,,b
+critical,Does correlation always imply causation?,Yes,No,,,b
+critical,Should you question the source of information before accepting it?,Yes,No,,,a
+critical,"If a conclusion is based on assumptions, should the assumptions be examined?",Yes,No,,,a
+critical,Can a strong argument have a false conclusion?,Yes,No,,,a
+critical,Does anecdotal evidence count as strong proof in critical reasoning?,Yes,No,,,b
+critical,Is it possible for a valid argument to be unsound?,Yes,No,,,a
+critical,"If new evidence arises, should it change how you interpret old data?",Yes,No,,,a
+critical,Should personal bias be considered when evaluating arguments?,Yes,No,,,a
+critical,"If two statements contradict each other, can both be true?",Yes,No,,,b
+critical,Is it necessary to identify assumptions in everyday reasoning?,Yes,No,,,a
+critical,Can a logically valid argument still mislead people?,Yes,No,,,a
+critical,Does the credibility of a source affect the strength of its argument?,Yes,No,,,a
+critical,"If an argument appeals to emotions, is it always weak?",Yes,No,,,b
+critical,Can an argument be logical but still unethical?,Yes,No,,,a
+critical,Does more evidence always mean stronger reasoning?,Yes,No,,,b
+critical,"If a statement is popular, does that make it true?",Yes,No,,,b
+critical,Is critical thinking useful in everyday decision making?,Yes,No,,,a

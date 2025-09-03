@@ -1,0 +1,21 @@
+﻿category,question_txt,option_a,option_b,option_c,option_d,ans
+logical,"Find the next number in the series: 2, 4, 8, 16, ?",A. 18,B. 24,C. 32,D. 36,c
+logical,Which is the odd one out?,A. Square,B. Circle,C. Triangle,D. Cube,d
+logical,"If CAT = 3120 (C=3, A=1, T=20), then DOG = ?",A. 4157,B. 4715,C. 4627,D. 4782,b
+logical,All cats are animals. Some animals are not dogs. Conclusion: Some cats are not dogs. Is the conclusion valid?,A. Yes,B. No,C. Cannot say,D. Only sometimes,a
+logical,"If TABLE = 52 and CHAIR = 43, then BENCH = ?",A. 40,B. 41,C. 42,D. 44,c
+logical,"Which number should replace the question mark? 5, 10, 20, 40, ?",A. 50,B. 60,C. 70,D. 80,d
+logical,Which pair does not belong?,A. Pen : Write,B. Knife : Cut,C. Book : Read,D. Spoon : Eat,d
+logical,Which is the odd one out?,A. Red,B. Green,C. Yellow,D. Square,d
+logical,A is older than B. B is older than C. Who is the youngest?,A. A,B. B,C. C,D. Cannot say,c
+logical,"If South becomes North, East becomes West, and so on, then what will West become?",A. East,B. North,C. South,D. Same,d
+logical,"Which number is missing? 3, 6, 12, 24, ?",A. 36,B. 48,C. 60,D. 72,b
+logical,Choose the correct analogy: Finger : Hand :: Toe : ?,A. Foot,B. Leg,C. Shoe,D. Nail,a
+logical,"Pointing to a man, Sarah says: “He is the son of my grandfather’s only son.” Who is the man?",A. Her uncle,B. Her brother,C. Her cousin,D. Her father,b
+logical,"If all roses are flowers and some flowers fade quickly, what can be concluded?",A. Some roses fade quickly,B. All flowers are roses,C. Some flowers are not roses,D. Cannot be determined,d
+logical,Arrange the words logically: 1. Seed 2. Plant 3. Fruit 4. Tree 5. Flower,"A. 1,2,3,4,5","B. 1,2,4,5,3","C. 2,1,4,3,5","D. 3,1,2,5,4",b
+logical,"Find the odd one out: 2, 6, 12, 20, 30",A. 2,B. 6,C. 20,D. 30,c
+logical,"Which number is next? 1, 4, 9, 16, ?",A. 20,B. 21,C. 25,D. 36,c
+logical,"If MONKEY is coded as NLPLOFZ, then DONKEY will be coded as?",A. EPOLEZ,B. DPOLEZ,C. EPNLFZ,D. EPOLEF,a
+logical,"Two men start walking in opposite directions. One walks 5 km, the other 7 km. What is the distance between them?",A. 10 km,B. 11 km,C. 12 km,D. 13 km,b
+logical,"If it takes 5 machines 5 minutes to make 5 items, how many minutes will it take 100 machines to make 100 items?",A. 1,B. 5,C. 10,D. 20,b
