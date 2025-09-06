@@ -21,9 +21,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $gpa = $_POST["gpa"] ?? "";
         $fin_assistance = $_POST["fin_assistance"] ?? "";
         $reasonForApplying = $_POST["reasonForApplying"] ?? "";
-        $transcript = $_POST["transcript"] ?? "";
-        $nationalID = $_POST["nationalID"] ?? "";
-        $recommendation_letter = $_POST["recommendation_letter"] ?? "";
+        $incomeBracket = $_POST["incomeBracket"] ?? "";
         // $email = $_POST["email"] ?? "";
         $careerGoal = $_POST["careerGoal"] ?? "";
 
@@ -44,56 +42,120 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             );
         }
 
-        $query = "INSERT INTO applications(
-        user_id, 
-        scholarship_id, 
-        school_attended, 
-        gpa, 
-        fin_assistance, 
-        reason_for_applying, 
-        transcript, 
-        nationalID, 
-        recomm_letter,
-        careerGoals
-        )
-        VALUES(?,?,?,?,?,?,?,?,?,?)";
+        if(!empty($_FILES)){
+            //store document
+            $storageDir = __DIR__ . "/docs/uploadedFiles/";
 
-        $result = $db->execute(
-            $query, 
-            [
-                $userId,
-                $scholsrshipID,
-                $schoolAttended,
-                $gpa,
-                $fin_assistance,
-                $reasonForApplying,
-                $transcript,
-                $nationalID,
-                $recommendation_letter,
-                $careerGoal
-            ]);
+            // create folder if it doesn't exist
+            if (!is_dir($storageDir)) {
+                mkdir($storageDir, 0777, true);
+            }
 
-        if($result > 0){
-            echo json_encode([
-                "status" => "success",
-                "message" => "Your application has been sent."
-                ]
-            );
-            exit;
+            $docUploaded = 0;
+
+            foreach($_FILES as $key => $file){
+                if($file["error"] === UPLOAD_ERR_OK){
+                    $uniqueFilename = time() . "_" . basename($file["name"]);
+                    $mainFilepath = $storageDir . $uniqueFilename;
+                }
+
+                if (move_uploaded_file($file["tmp_name"], $mainFilepath)) {
+                    try{
+                        $query = "INSERT INTO documents (user_id, file_path, doc_type) VALUES (?, ?, ?)";
+                        $docUploaded = $db->execute(
+                            $query, 
+                            [
+                                $userId, 
+                                $mainFilepath, 
+                                $key
+                            ]
+                        );
+                    }
+                    catch(Exception $e){
+                        echo json_encode([
+                            "status"=>"error", 
+                            "message"=>"Exception error: ". $e->getMessage()
+                        ]);
+                        exit;
+                    }
+                }
+                else{
+                    echo json_encode([
+                    "status"=>"error", 
+                    "message"=>"Document not uploaded"
+                    ]);
+                    exit;
+                }
+            }
+            if($docUploaded > 0){
+                
+                $query = "INSERT INTO applications(
+                user_id, 
+                scholarship_id, 
+                school_attended, 
+                gpa, 
+                fin_assistance, 
+                reason_for_applying,
+                careerGoals
+                )
+                VALUES(?,?,?,?,?,?,?)";
+
+                $result = $db->execute(
+                    $query, 
+                    [
+                        $userId,
+                        $scholsrshipID,
+                        $schoolAttended,
+                        $gpa,
+                        $fin_assistance,
+                        $reasonForApplying,
+                        $careerGoal
+                    ]);
+
+                if($result > 0){
+                    echo json_encode([
+                        "status" => "success",
+                        "message" => "Your application has been sent."
+                        ]
+                    );
+                    exit;
+                }
+                else{
+                    echo json_encode([
+                        "status" => "error", 
+                        "message" => "Application Process failed."
+                    ]);
+                    exit;
+                }
+            }
+            
+
+
+            // // insert the values into doc tbl
+            // $douments = [$transcript, $nationalID, $recommendation_letter, $need];
+            // $docNames = ["Transcript", "National ID","Recommendation Letter", "Proof Of Need"];
+
+            // foreach(array_combine($documents,$docNames) as $doc=>$name){
+
+            //     $query = "INSERT INTO documents (user_id, file_path, doc_type) VALUES (?,?,?)";
+
+            //     $result = $db->execute($query, [$userId, $doc, $name]);
+
+            // }
         }
         else{
             echo json_encode([
                 "status" => "error", 
-                "message" => "Application Process failed."
+                "message" => "No file recieved"
             ]);
             exit;
         }
     }
     catch(Exception $e){
         echo json_encode([
-                "status" => "error", 
-                "message" => "Excpetion Error: ". $e->getMessage()
-            ]);
+            "status" => "error", 
+            "message" => "Excpetion Error: ". $e->getMessage()
+        ]);
     }
 
 }
@@ -103,5 +165,4 @@ else{
         "message" => "Invalid request method"
     ]);
 }
-
 ?>

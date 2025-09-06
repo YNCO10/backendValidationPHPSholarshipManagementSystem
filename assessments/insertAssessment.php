@@ -1,0 +1,94 @@
+<?php
+
+//show Hidden errors
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// force json output
+header('Content-Type: application/json');
+
+require_once "C:/XAMPP/htdocs/BackEnd/scholarshipManagement/dbHandler.php";
+
+$db = new database();
+$conn = $db->connectToDatabase();
+
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    try{
+        $email = $_POST["email"] ?? "";
+        $score = $_POST["score"] ?? "";
+        $totalQuest = $_POST["totalQuest"] ?? "";
+
+        if(empty($email) || empty($score)){
+            echo json_encode([
+                "status" => "error", 
+                "message" => "Empty post message"
+            ]);
+            exit;
+        }
+
+        $demoEmail = "jeff@gmail.com";
+        $query = "SELECT id FROM applicant WHERE email = ?";
+        $result = $db->select($query, [$demoEmail]);
+        if(count($result) > 0 ){
+            $uid = $result[0]["id"];
+        }
+        else{
+            echo json_encode([
+                "status" => "error", 
+                "message" => "UID not found"
+            ]);
+        }
+
+        // check if user already took an assessment
+        $isDoneQuery = "SELECT * FROM assessment WHERE user_id = ?";
+        $isDone = $db->select($isDoneQuery, [$uid]);
+
+        if(count($isDone) > 0){
+            $updateQuery = "UPDATE assessment SET score = ?, totalQuest = ? WHERE user_id = ?";
+            $isUpdated = $db->execute($updateQuery, params: [$score, $totalQuest, $uid]);
+
+            if($isUpdated > 0){
+                echo json_encode([
+                    "status" => "success", 
+                    "message" => "Assessment Recorded."
+                ]);
+            }
+            else{
+                echo json_encode([
+                    "status" => "error", 
+                    "message" => "Failed to record assessment"
+                ]);
+            }
+        }
+        else{
+            $query = "INSERT INTO assessment (user_id, score, totalQuest) VALUES (?,?,?)";
+            $result = $db->execute($query, [$uid, $score, $totalQuest]);
+
+            if($result > 0){
+                echo json_encode([
+                    "status" => "success", 
+                    "message" => "Assessment Recorded."
+                ]);
+            }
+            else{
+                echo json_encode([
+                    "status" => "error", 
+                    "message" => "Failed to record assessment"
+                ]);
+            }
+        }
+    }
+    catch(Exception $e){
+        echo json_encode([
+            "status" => "error", 
+            "message" => "Exception Error: ". $e->getMessage()
+        ]);
+    }
+}
+else{
+    echo json_encode([
+        "status" => "error", 
+        "message" => "Invalid request method"
+    ]);
+}
+?>

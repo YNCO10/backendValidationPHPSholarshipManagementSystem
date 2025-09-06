@@ -27,29 +27,6 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $providerEmail = $_POST["providerEmail"] ?? "";
     $selectedPerks = $_POST["perks"] ?? "";
 
-// // ARRAY TO LOOP N CHECK EMPTY STRINGS
-//     $required = [
-//     "type" => $type,
-//     "descrip" => $descrip,
-//     "deadline" => $deadline,
-//     "filename" => $filename,
-//     "email" => $email,
-//     "provider" => $provider,
-//     "subject" => $subject,
-//     "financialAmount" => $financialAmount,
-//     "applicationLink" => $link,
-//     "providerEmail" => $providerEmail
-//     ];
-
-//     foreach ($required as $field => $value) {
-//         if (empty($value)) {
-//             echo json_encode(["status" => "error", "message" => "$field empty"]);
-//             exit;
-//         }
-//     }
-
-
-
 
     if(isset($_FILES["document"])){//this is the file path
         $storageDir = __DIR__ . "/docs/uploadedFiles/";
