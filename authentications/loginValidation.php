@@ -69,12 +69,34 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         // exit;
 
         if(password_verify($pass_word, $applicantHashed_pass)){
+            $uidQuery = "SELECT id FROM applicant WHERE email = ?";
+            $uid = $db->select($assessmentDoneQuery, [$email]);
 
-            echo json_encode([
-                "status" => "applicant", 
-                "applicantName" => $applicantUser[0]["name"]
-            ]);
-            exit;
+            if(count($uid) > 0){
+                $isAssessmentDoneQuery = "SELECT assessment_completed FROM applicant WHERE user_id = ?";
+                $$isAssessmentDone = $db->select($assessmentDoneQuery, $uid[0]["id"]);
+
+                if($isAssessmentDone[0]["assessment_completed"] == 1){
+                    echo json_encode([
+                        "status" => "applicant", 
+                        "applicantName" => $applicantUser[0]["name"],
+                        "isAssessmentDone" => true
+                    
+                    ]);
+                exit;
+                }
+                else{
+                    echo json_encode([
+                        "status" => "applicant", 
+                        "applicantName" => $applicantUser[0]["name"],
+                        "isAssessmentDone" => false
+                        // take to assessment page scince user hasn't dont them yet.
+                    ]);
+                    exit;
+                }
+
+                 
+            }
         }
         else{
             echo json_encode([

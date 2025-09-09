@@ -15,7 +15,38 @@ $db = new database();
 $conn = $db->connectToDatabase();
 
 
-    $query = "SELECT `id`, `name`, `type`, `file_path`, `deadline` FROM scholarships";
+    // $query = "SELECT `id`, `name`, `type`, `file_path`, `deadline` FROM scholarships";
+    $query = "SELECT 
+    s.id,
+    s.name AS scholarship_name,
+    s.type,
+    s.file_path,
+    s.deadline,
+    s.descrip,
+    s.provider,
+    s.financial_amount,
+    s.applicantion_link,
+    s.provider_email,
+    s.subject,
+    GROUP_CONCAT(p.perk_name SEPARATOR ', ') AS perks
+    FROM scholarships s
+    LEFT JOIN sholarship_perks sp 
+    ON s.id = sp.scholarship_id
+    LEFT JOIN perks p 
+    ON sp.perk_id = p.perk_id
+    GROUP BY 
+	s.id, 
+    s.name, 
+    s.type,
+    s.file_path,
+    s.deadline, 
+    s.descrip,
+    s.provider, 
+    s.financial_amount, 
+    s.applicantion_link,
+    s.provider_email,
+    s.subject;
+";
 
     $tblData = $db->select($query, []);
 

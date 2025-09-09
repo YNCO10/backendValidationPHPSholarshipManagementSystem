@@ -1,0 +1,20 @@
+﻿critical,"If someone argues without evidence, should their claim be accepted?",Yes,No,,,b
+critical,"If a conclusion does not follow from the premises, is the argument invalid?",Yes,No,,,a
+critical,Should alternative explanations always be considered before accepting a conclusion?,Yes,No,,,a
+critical,"If one strong piece of evidence conflicts with many weak ones, should it be prioritized?",Yes,No,,,a
+critical,Can persuasive language make a weak argument seem strong?,Yes,No,,,a
+critical,"If an authority figure makes a claim, does that automatically make it true?",Yes,No,,,b
+critical,Should assumptions always be made explicit in reasoning?,Yes,No,,,a"
+critical,Can an argument be valid even if its conclusion is false?,Yes,No,,,a
+critical,"If the premises are true and the reasoning is valid, must the conclusion be true?",Yes,No,,,a
+critical,Does the number of people who agree with an argument determine its validity?,Yes,No,,,b
+critical,"If an argument uses vague terms, should it be questioned?",Yes,No,,,a
+critical,Can strong emotions interfere with logical reasoning?,Yes,No,,,a
+critical,"If evidence is incomplete, should firm conclusions be avoided?",Yes,No,,,a
+critical,Does the order in which information is presented affect reasoning?,Yes,No,,,a
+critical,Should generalizations always be checked against specific evidence?,Yes,No,,,a
+critical,"If two experts disagree, does it mean neither can be right?",Yes,No,,,b
+critical,Can an argument be relevant but still weak?,Yes,No,,,a"
+critical,"If reasoning is circular, is the argument flawed?",Yes,No,,,a
+critical,Should counterarguments always be considered in reasoning?,Yes,No,,,a
+critical,"If evidence is biased, can the conclusion still be trusted?",Yes,No,,,b

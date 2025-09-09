@@ -16,7 +16,7 @@ $conn = $db->connectToDatabase();
 if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     $category = $_POST["category"] ?? "";
-    $questionLimit = 5;
+    $questionLimit = 10;
 
     $query = "SELECT * FROM `questions` WHERE `category` = ? ORDER BY RAND() LIMIT ?";
     

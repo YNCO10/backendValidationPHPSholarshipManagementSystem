@@ -26,7 +26,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             exit;
         }
 
-        $demoEmail = "jeff@gmail.com";
+        // $demoEmail = "jeff@gmail.com";
+        // $demoEmail = "test@gmail.com";
+        $demoEmail = "kampha@gmail.com";
         $query = "SELECT id FROM applicant WHERE email = ?";
         $result = $db->select($query, [$demoEmail]);
         if(count($result) > 0 ){
@@ -63,18 +65,28 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         else{
             $query = "INSERT INTO assessment (user_id, score, totalQuest) VALUES (?,?,?)";
             $result = $db->execute($query, [$uid, $score, $totalQuest]);
+            
 
             if($result > 0){
-                echo json_encode([
-                    "status" => "success", 
-                    "message" => "Assessment Recorded."
-                ]);
+                $one = 1;
+                $updateUserQuery = "UPDATE applicant SET assessment_completed = ? WHERE id = ?";
+                $updateUser = $db->execute($updateUserQuery, [$one, $uid]);
+
+                if($updateUser > 0){
+                    echo json_encode([
+                        "status" => "success", 
+                        "message" => "Your Assessment has been Recorded."
+                    ]);
+                    exit;
+                }
+                
             }
             else{
                 echo json_encode([
                     "status" => "error", 
                     "message" => "Failed to record assessment"
                 ]);
+                exit;
             }
         }
     }

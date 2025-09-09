@@ -1,0 +1,20 @@
+numerical,"The average of 8 numbers is 15. If one number is removed, the average becomes 14. What was the removed number?",15,18,20,22,c
+numerical,"If 12 men can complete a task in 15 days, how many men are needed to complete it in 10 days?",12,15,18,20,c
+numerical,"Simplify: (3/4) ÷ (9/16)",2/3,4/3,16/27,27/16,b
+numerical,"The perimeter of a square is 64 cm. What is its area?",128,196,256,512,c
+numerical,"If the cost price is MWK240 and the selling price is MWK300, what is the profit percentage?",20%,22%,25%,30%,c
+numerical,"What is 15% of 480?",60,62,68,72,d
+numerical,"Solve for x: 2x + 5 = 19",6,7,8,9,b
+numerical,"The LCM of 12 and 18 is?",24,30,36,48,c
+numerical,"A sum of money doubles in 12 years at simple interest. What is the rate per annum?",6%,8%,10%,12%,b
+numerical,"The difference between the squares of 15 and 13 is?",28,54,56,60,c
+numerical,"If the speed of a car is 72 km/h, how many meters does it travel per second?",15,18,20,25,b
+numerical,"What is the simple interest on MWK1200 at 10% per annum for 2 years?",120,200,240,300,c
+numerical,"If 20% of a number is 50, what is the number?",200,210,220,250,a
+numerical,"The cost of 12 pens is MWK180. What is the cost of 20 pens?",MWK280,MWK290,MWK300,MWK320,c
+numerical,"What is the probability of getting an odd number when a dice is rolled?",1/2,1/3,2/3,5/6,a
+numerical,"A train travels 180 km in 3 hours. What is its speed?",40,50,60,70,c
+numerical,"The average of 5 consecutive odd numbers is 25. What is the largest number?",29,31,33,35,b
+numerical,"The sum of the first 10 natural numbers is?",45,50,55,60,b
+numerical,"If a = 5, b = 3, find the value of a² + b²",25,34,35,38,b
+numerical,"A man bought a shirt for MWK500 and sold it at a loss of 10%. What is the selling price?",MWK450,MWK460,MWK470,MWK480,a
