@@ -46,7 +46,7 @@ $conn = $db->connectToDatabase();
     s.applicantion_link,
     s.provider_email,
     s.subject;
-";
+    ";
 
     $tblData = $db->select($query, []);
 
