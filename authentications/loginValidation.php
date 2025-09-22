@@ -69,12 +69,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         // exit;
 
         if(password_verify($pass_word, $applicantHashed_pass)){
-            $uidQuery = "SELECT id FROM applicant WHERE email = ?";
-            $uid = $db->select($assessmentDoneQuery, [$email]);
+            $uidQuery = "SELECT * FROM applicant WHERE email = ?";
+            $uid = $db->select($uidQuery, params: [$email]);
 
             if(count($uid) > 0){
-                $isAssessmentDoneQuery = "SELECT assessment_completed FROM applicant WHERE user_id = ?";
-                $$isAssessmentDone = $db->select($assessmentDoneQuery, $uid[0]["id"]);
+                $isAssessmentDoneQuery = "SELECT assessment_completed FROM applicant WHERE id = ?";
+                $isAssessmentDone = $db->select($isAssessmentDoneQuery, [$uid[0]["id"]]);
 
                 if($isAssessmentDone[0]["assessment_completed"] == 1){
                     echo json_encode([
