@@ -28,9 +28,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
         // $demoEmail = "jeff@gmail.com";
         // $demoEmail = "test@gmail.com";
-        $demoEmail = "kampha@gmail.com";
+        // $demoEmail = "test1@gmail.com";
         $query = "SELECT id FROM applicant WHERE email = ?";
-        $result = $db->select($query, [$demoEmail]);
+        $result = $db->select($query, [$email]);
         if(count($result) > 0 ){
             $uid = $result[0]["id"];
         }
@@ -39,6 +39,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 "status" => "error", 
                 "message" => "UID not found"
             ]);
+            exit;
         }
 
         // check if user already took an assessment
@@ -46,6 +47,18 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $isDone = $db->select($isDoneQuery, [$uid]);
 
         if(count($isDone) > 0){
+
+            $one = 1;
+            $updateUserQuery = "UPDATE applicant SET  assessment_completed = ? WHERE id = ?";
+            $updateUser = $db->execute($updateUserQuery, [$one, $uid]);
+            if($updateUser == 0){
+                echo json_encode([
+                    "status" => "error", 
+                    "message" => "Failed to Update assessment"
+                ]);
+                exit;
+            }
+
             $updateQuery = "UPDATE assessment SET score = ?, totalQuest = ? WHERE user_id = ?";
             $isUpdated = $db->execute($updateQuery, params: [$score, $totalQuest, $uid]);
 
@@ -54,12 +67,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                     "status" => "success", 
                     "message" => "Assessment Recorded."
                 ]);
+                exit;
             }
             else{
                 echo json_encode([
                     "status" => "error", 
                     "message" => "Failed to record assessment"
                 ]);
+                exit;
             }
         }
         else{
@@ -69,8 +84,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
             if($result > 0){
                 $one = 1;
-                $updateUserQuery = "UPDATE applicant SET assessment_completed = ? WHERE id = ?";
-                $updateUser = $db->execute($updateUserQuery, [$one, $uid]);
+                $updateUserQuery = "UPDATE applicant SET  assessment_completed = ?WHERE id = ?";
+            $updateUser = $db->execute($updateUserQuery, [$one, $uid]);
 
                 if($updateUser > 0){
                     echo json_encode([
@@ -95,6 +110,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             "status" => "error", 
             "message" => "Exception Error: ". $e->getMessage()
         ]);
+        exit;
     }
 }
 else{
