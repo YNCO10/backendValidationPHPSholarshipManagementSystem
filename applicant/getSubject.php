@@ -14,19 +14,19 @@ require_once "C:/XAMPP/htdocs/BackEnd/scholarshipManagement/dbHandler.php";
 $db = new database();
 $conn = $db->connectToDatabase();
 
-
 try{
-    $sql = "SELECT email FROM applicant";
-    $result = $conn->query($sql);
+    $query = "SELECT DISTINCT `subject` FROM applicant ORDER BY `subject`";
+    
+    $result = $conn->query($query);
 
-    $emails = [];
+    $subjects = [];
     while ($row = $result->fetch_assoc()) {
-        $emails[] = $row['email'];
+        $subjects[] = $row['subject'];
     }
 
     echo json_encode([
         "status" => "success",
-        "data"=> $emails
+        "data"   => $subjects
     ]);
 }
 catch(Exception $e){
