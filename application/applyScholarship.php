@@ -22,14 +22,13 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $fin_assistance = $_POST["fin_assistance"] ?? "";
         $reasonForApplying = $_POST["reasonForApplying"] ?? "";
         $incomeBracket = $_POST["incomeBracket"] ?? "";
-        // $email = $_POST["email"] ?? "";
         $careerGoal = $_POST["careerGoal"] ?? "";
-
+        $email = $_POST["email"] ?? "";
         // GET USER ID USING EMAIL
-        $demoEmail = "jeff@gmail.com";
+        // $email = "test11@gmail.com";
         $scholsrshipID = 10;
         $getIdQuery = "SELECT id FROM applicant WHERE email = ?";
-        $userIdResult = $db->select($getIdQuery, [$demoEmail]);
+        $userIdResult = $db->select($getIdQuery, [$email]);
 
         if(count($userIdResult) > 0){
             $userId = $userIdResult[0]["id"];

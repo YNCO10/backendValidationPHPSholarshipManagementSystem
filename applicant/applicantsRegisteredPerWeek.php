@@ -40,7 +40,9 @@ try{
     while ($row = $result->fetch_assoc()) {
         $data[$row['weekday']] = (int)$row['num_applicants'];
     }
-    echo json_encode($data);
+    echo json_encode([
+        "data"=>$data
+    ]);
 
 }
 catch(Exception $e){

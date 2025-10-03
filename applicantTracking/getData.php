@@ -16,7 +16,7 @@ $conn = $db->connectToDatabase();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $email = $_POST["email"] ?? "";
-    // $email = "woah@gmail.com";
+    // $email = "test11@gmail.com";
     // get UID, that's what we're going to use in the queryies
 
     try{
@@ -41,8 +41,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     $uploadedDocs = array_column($documentTbl, "doc_type");
 
-                    $financailProof = in_array("Proof_Of_Need", $documentTbl);
-                    $transcript = in_array("Transcript", $documentTbl);
+                    $financailProof = in_array("Proof Of Need", $uploadedDocs);
+                    $transcript = in_array("Transcript", $uploadedDocs);
 
                     $scoreQuery = "SELECT * FROM assessment WHERE user_id = ?";
                     $score = $db->select($scoreQuery, [$uid]);

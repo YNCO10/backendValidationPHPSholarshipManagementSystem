@@ -16,28 +16,40 @@ $conn = $db->connectToDatabase();
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     try{
         $email = $_POST["email"] ?? "";
-        $score = $_POST["score"] ?? "";
+        $score = floatval($_POST["score"] ?? "");
 
         $query = "SELECT * FROM applicant WHERE email = ?";
 
         $uid = $db->select($query, [$email]);
 
         if(count($uid) > 0){
-            $query = "UPDATE applicant SET score = ? WHERE id = ?";
-            $result = $db->execute($query, [$score, $uid[0]["id"]]);
-
-            if($result > 0){
+            
+            try{
+                $query = "UPDATE applicant SET score = ? WHERE id = ?";
+                $result = $db->execute($query, [$score, $uid[0]["id"]]);
                 echo json_encode([
                     "status"=>"success",
                     "message"=>"Applicant is now eligible for ranking"
                 ]);
             }
-            else{
+            catch(Exception $e){
                 echo json_encode([
                     "status" => "error", 
-                    "message" => "Failed to update score"
-                ]);
+                    "message" => "Exception: " . $e->getMessage()
+                ]); 
             }
+            // if($result > 0){
+            //     echo json_encode([
+            //         "status"=>"success",
+            //         "message"=>"Applicant is now eligible for ranking"
+            //     ]);
+            // }
+            // else{
+            //     echo json_encode([
+            //         "status" => "error", 
+            //         "message" => "Failed to update score"
+            //     ]);
+            // }
         }
         else{
             echo json_encode([
