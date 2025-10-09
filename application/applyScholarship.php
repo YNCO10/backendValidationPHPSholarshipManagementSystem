@@ -24,9 +24,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $incomeBracket = $_POST["incomeBracket"] ?? "";
         $careerGoal = $_POST["careerGoal"] ?? "";
         $email = $_POST["email"] ?? "";
+        $scholarshipID = $_POST["scholarshipID"] ?? "";
         // GET USER ID USING EMAIL
         // $email = "test11@gmail.com";
-        $scholsrshipID = 10;
+        
+        // $scholarshipID = 10;
         $getIdQuery = "SELECT id FROM applicant WHERE email = ?";
         $userIdResult = $db->select($getIdQuery, [$email]);
 
@@ -103,7 +105,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                     $query, 
                     [
                         $userId,
-                        $scholsrshipID,
+                        $scholarshipID,
                         $schoolAttended,
                         $gpa,
                         $fin_assistance,

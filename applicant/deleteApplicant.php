@@ -16,34 +16,69 @@ $conn = $db->connectToDatabase();
 
 if($_SERVER["REQUEST_METHOD"]==="POST"){
 
-    $userID = $_POST["id"] ?? "";
+    try{
+        $userID = $_POST["id"] ?? "";
+        $email = $_POST["email"] ?? "";
 
-    if($userID == ""){
-        
-        echo json_encode([
-            "status" => "error",
-            "message" => "No iD was given"
-        ]);
-        exit;
+        if($userID == ""){
+            if($email == ""){
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "No Email or ID was given"
+                ]);
+                exit;
+            }
+            else{
+                $query = "SELECT * FROM applicant WHERE email = ?";
+                $result = $db->select($query, [$email]);
+
+                if(count($result) > 0){
+                    $uid = $result[0]["id"];
+                    $query = "DELETE FROM applicant WHERE id = ?";
+                    $isDeleted = $db->execute($query, [$uid]);
+
+                    if($isDeleted > 0){
+                        echo json_encode([
+                            "status" => "success", 
+                            "message" => "Applicant Has been deleted."
+                        ]);
+                    }
+                    else{
+                        
+                        echo json_encode([
+                            "status" => "error", 
+                            "message" => "Applicant deletion Failed"
+                        ]);
+                    }
+                }
+            }
+        }
+        else{
+            $query = "DELETE FROM applicant WHERE id = ?";
+            $isDeleted = $db->execute($query, [$userID]);
+
+            if($isDeleted > 0){
+                echo json_encode([
+                    "status" => "success", 
+                    "message" => "Applicant Has been deleted."
+                ]);
+            }
+            else{
+                
+                echo json_encode([
+                    "status" => "error", 
+                    "message" => "Applicant deletion Failed"
+                ]);
+            }
+        }
+
     }
-
-    $query = "DELETE FROM applicant WHERE id = ?";
-    $isDeleted = $db->execute($query, [$userID]);
-
-    if($isDeleted > 0){
+    catch(Exception $e){
         echo json_encode([
-            "status" => "success", 
-            "message" => "Applicant Has been deleted."
+            "status"=>"error",
+            "message"=>"Exception: " . $e->getMessage()
         ]);
     }
-    else{
-        
-        echo json_encode([
-            "status" => "error", 
-            "message" => "Applicant deletion Failed"
-        ]);
-    }
-
 }
 else{
     
