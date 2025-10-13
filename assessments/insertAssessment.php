@@ -84,8 +84,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
             if($result > 0){
                 $one = 1;
-                $updateUserQuery = "UPDATE applicant SET  assessment_completed = ?WHERE id = ?";
-            $updateUser = $db->execute($updateUserQuery, [$one, $uid]);
+                $updateUserQuery = "UPDATE applicant SET  assessment_completed = ? WHERE id = ?";
+                $updateUser = $db->execute($updateUserQuery, [$one, $uid]);
 
                 if($updateUser > 0){
                     echo json_encode([

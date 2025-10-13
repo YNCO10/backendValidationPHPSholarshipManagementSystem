@@ -25,6 +25,9 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $gender = $_POST["gender"] ?? "";
     $phoneNum = $_POST["phone_number"] ?? "";
     $age = $_POST["age"] ?? "";
+    $gpa = $_POST["gpa"] ?? "";
+    $schoolAttended = $_POST["schoolAttended"];
+    $incomeBracket = $_POST["incomeBracket"];
 
     $pass_word = (string) $pass_word; 
     $pass_word = trim($pass_word);
@@ -82,11 +85,36 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $hashed_pass = password_hash($pass_word, PASSWORD_DEFAULT);
 
     // INSERT USER
-    $query = "INSERT INTO `applicant` (`name`, `email`, `pass_word`, `age`, `phone_num`, `gender`, `nationality`, `education_level`, `dob`) VALUES (?,?,?,?,?,?,?,?,?)";
+    $query = "INSERT INTO `applicant` (
+    `name`, 
+    `email`, 
+    `pass_word`, 
+    `age`, 
+    `phone_num`, 
+    `gender`, 
+    `nationality`, 
+    `education_level`, 
+    `dob`,
+    gpa,
+    school_attended,
+    income_bracket)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
     $insertedValues = $db->execute(
         $query,
         [
-            $name, $email, $hashed_pass, $age, $phoneNum, $gender, $naitonality, $educationLevel, $dob
+            $name, 
+            $email, 
+            $hashed_pass, 
+            $age, 
+            $phoneNum, 
+            $gender, 
+            $naitonality, 
+            $educationLevel, 
+            $dob,
+            $gpa,
+            $schoolAttended,
+            $incomeBracket
         ]
     );
 
