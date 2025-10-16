@@ -17,8 +17,6 @@ $conn = $db->connectToDatabase();
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     
     try{
-        $schoolAttended = $_POST["schoolAttended"] ?? "";
-        $gpa = $_POST["gpa"] ?? "";
         $fin_assistance = $_POST["fin_assistance"] ?? "";
         $reasonForApplying = $_POST["reasonForApplying"] ?? "";
         $incomeBracket = $_POST["incomeBracket"] ?? "";
@@ -41,8 +39,48 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 "message" => "User ID not found."
                 ]
             );
+            exit;
         }
 
+        //insert application
+            $query = "INSERT INTO applications(
+            user_id, 
+            scholarship_id,
+            fin_assistance, 
+            reason_for_applying,
+            careerGoals
+            )
+            VALUES(?,?,?,?,?)";
+
+            $result = $db->execute(
+                $query, 
+                [
+                    $userId,
+                    $scholarshipID,
+                    $fin_assistance,
+                    $reasonForApplying,
+                    $careerGoal
+                ]);
+
+            if($result > 0){
+                //get last inserted id so we add it to document tbl
+                $applicationID = $db->getLastInsertId();
+                
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Your application has been sent."
+                    ]
+                );
+            }
+            else{
+                echo json_encode([
+                    "status" => "error", 
+                    "message" => "Application Process failed."
+                ]);
+                exit;
+            }
+        
+        // check for any files
         if(!empty($_FILES)){
             //store document
             $storageDir = __DIR__ . "/docs/uploadedFiles/";
@@ -60,15 +98,16 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                     $mainFilepath = $storageDir . $uniqueFilename;
                 }
 
-                if (move_uploaded_file($file["tmp_name"], $mainFilepath)) {
+                if(move_uploaded_file($file["tmp_name"], $mainFilepath)) {
                     try{
-                        $query = "INSERT INTO documents (user_id, file_path, doc_type) VALUES (?, ?, ?)";
+                        $query = "INSERT INTO documents (user_id, file_path, doc_type, application_ID) VALUES (?, ?, ?, ?)";
                         $docUploaded = $db->execute(
                             $query, 
                             [
                                 $userId, 
                                 $mainFilepath, 
-                                $key
+                                $key,
+                                $applicationID
                             ]
                         );
                     }
@@ -88,61 +127,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                     exit;
                 }
             }
-            if($docUploaded > 0){
-                
-                $query = "INSERT INTO applications(
-                user_id, 
-                scholarship_id, 
-                school_attended, 
-                gpa, 
-                fin_assistance, 
-                reason_for_applying,
-                careerGoals
-                )
-                VALUES(?,?,?,?,?,?,?)";
 
-                $result = $db->execute(
-                    $query, 
-                    [
-                        $userId,
-                        $scholarshipID,
-                        $schoolAttended,
-                        $gpa,
-                        $fin_assistance,
-                        $reasonForApplying,
-                        $careerGoal
-                    ]);
-
-                if($result > 0){
-                    echo json_encode([
-                        "status" => "success",
-                        "message" => "Your application has been sent."
-                        ]
-                    );
-                    exit;
-                }
-                else{
-                    echo json_encode([
-                        "status" => "error", 
-                        "message" => "Application Process failed."
-                    ]);
-                    exit;
-                }
-            }
             
-
-
-            // // insert the values into doc tbl
-            // $douments = [$transcript, $nationalID, $recommendation_letter, $need];
-            // $docNames = ["Transcript", "National ID","Recommendation Letter", "Proof Of Need"];
-
-            // foreach(array_combine($documents,$docNames) as $doc=>$name){
-
-            //     $query = "INSERT INTO documents (user_id, file_path, doc_type) VALUES (?,?,?)";
-
-            //     $result = $db->execute($query, [$userId, $doc, $name]);
-
-            // }
         }
         else{
             echo json_encode([
@@ -151,6 +137,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             ]);
             exit;
         }
+            
     }
     catch(Exception $e){
         echo json_encode([

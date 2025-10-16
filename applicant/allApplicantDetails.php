@@ -43,13 +43,13 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         a.score AS applicant_score,
         a.phone_num,
         a.education_level,
+        a.school_attended,
+        a.gpa,
+        a.income_bracket,
         ass.score AS assessment_score,
         sc.deadline,
         app.date_submitted,
-        app.school_attended,
-        app.gpa,
         app.reason_for_applying,
-        app.income_bracket,
         app.careerGoals
         FROM applicant a
         LEFT JOIN assessment ass ON a.id = ass.user_id

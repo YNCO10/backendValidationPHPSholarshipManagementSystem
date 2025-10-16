@@ -101,9 +101,9 @@ class database{
                         else $types .= "s";
                     }
                 }
-            // bind params
+                // bind params
                 $stmt->bind_param($types,...$params);
-                }
+            }
         
             $stmt->execute();
             $rowsAffected = $stmt->affected_rows;

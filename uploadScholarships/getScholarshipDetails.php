@@ -19,7 +19,7 @@ $conn = $db->connectToDatabase();
     $query = "SELECT 
     s.id,
     s.name AS scholarship_name,
-    s.type,
+    s.scheme_type,
     s.file_path,
     s.deadline,
     s.descrip,
@@ -37,7 +37,7 @@ $conn = $db->connectToDatabase();
     GROUP BY 
 	s.id, 
     s.name, 
-    s.type,
+    s.scheme_type,
     s.file_path,
     s.deadline, 
     s.descrip,

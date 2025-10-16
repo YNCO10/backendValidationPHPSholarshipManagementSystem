@@ -19,12 +19,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     try{
         $academic = $_POST["academic"] ?? "";
         $assessment = $_POST["assessment"] ?? "";
-        $doc = $_POST["doc"] ?? "";
         $financial = $_POST["financial"] ?? "";
 
-        $query = "UPDATE weights SET academic = ?, assessment = ?, doc = ?, financial = ?";
+        $query = "UPDATE weights SET academic = ?, assessment = ?, financial = ?";
 
-        $weights = $db->execute($query, [$academic, $assessment, $doc, $financial]);
+        $weights = $db->execute($query, [$academic, $assessment, $financial]);
 
         if($weights > 0){
             echo json_encode([

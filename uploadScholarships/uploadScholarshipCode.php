@@ -26,6 +26,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $link = $_POST["applicationLink"] ?? "";
     $providerEmail = $_POST["providerEmail"] ?? "";
     $selectedPerks = $_POST["perks"] ?? "";
+    $schemeName = $_POST["schemeName"] ?? "";
 
 
     if(isset($_FILES["document"])){//this is the file path
@@ -57,11 +58,22 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                 exit;
             }
 
+            $query = "SELECT id FROM schemes WHERE scheme_name = ?";
+            $result = $db->select($query, [$schemeName]);
+            if(count($result) <= 0){
+                echo json_encode([
+                    "status"=>"error", 
+                    "message"=>"Scheme ID not found. Check if the scheme name was accurate."
+                ]);
+                exit;
+            }
+            $schemeID = $result[0]["id"];
+
             try{
                 // insert data into db
                 $query = "INSERT INTO scholarships (
                 `name`, 
-                `type`, 
+                `scheme_type`, 
                 `file_path`, 
                 `admin_id`, 
                 `deadline`,
@@ -70,15 +82,16 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                 `financial_amount`,
                 `applicantion_link`,
                 `provider_email`,
-                `subject`
+                `subject`,
+                `scheme_id`
                 ) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
                 $insertedValues = $db->execute(
                     $query, 
                     [
                         $filename, 
-                        $type, 
+                        $schemeName, 
                         $path, 
                         $adminId[0]["id"], 
                         $deadline,
@@ -87,7 +100,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                         $financialAmount,
                         $link,
                         $providerEmail,
-                        $subject
+                        $subject,
+                        $schemeID
                     ]
                 );
 
