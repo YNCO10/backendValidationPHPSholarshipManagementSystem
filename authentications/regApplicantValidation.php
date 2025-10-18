@@ -28,6 +28,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $gpa = $_POST["gpa"] ?? "";
     $schoolAttended = $_POST["schoolAttended"];
     $incomeBracket = $_POST["incomeBracket"];
+    $program = $_POST["program"];
 
     $pass_word = (string) $pass_word; 
     $pass_word = trim($pass_word);
@@ -97,8 +98,9 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     `dob`,
     gpa,
     school_attended,
-    income_bracket)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    income_bracket,
+    program)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     $insertedValues = $db->execute(
         $query,
@@ -114,7 +116,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
             $dob,
             $gpa,
             $schoolAttended,
-            $incomeBracket
+            $incomeBracket,
+            $program
         ]
     );
 

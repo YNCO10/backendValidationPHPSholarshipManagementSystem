@@ -42,15 +42,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $applicantDetails = $db->select($query, [$recipientEmail]);
 
         if(count($applicantDetails) > 0){
-            $applicantID = $applicantDetails[0]["id"];
-            // check if applicant is verified
-            if($applicantDetails[0]["verified"] == 0){
-                echo json_encode([
-                    "status" => "error", 
-                    "message" => "That applicant is not Verified. Only verified accounts can recieve emails."
-                ]);
-                exit;
-            }
 
             $query = "INSERT INTO notifications(
             title, 
@@ -74,19 +65,31 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 ]);
 
             if($result > 0){
-                if(sendNotification($recipientEmail, $title, $msg)){
-                    echo json_encode(value: [
-                        "status" => "success", 
-                        "message" => "Notification has been sent to " . $applicantDetails[0]["name"]
-                    ]);
-                    exit;
-                }
-                else{
+                $applicantID = $applicantDetails[0]["id"];
+                // check if applicant is verified
+                if($applicantDetails[0]["verified"] == 0){
                     echo json_encode([
-                        "status" => "error", 
-                        "message" => "Email failed to send"
+                        "status" => "notVerified", 
+                        "message" => "That applicant is not Verified. Only verified accounts can recieve emails.\nA regular message Will be sent which can be viewed in the notifications page."
                     ]);
                     exit;
+
+                }
+                else if($applicantDetails[0]["verified"] == 1){
+                    if(sendNotification($recipientEmail, $title, $msg)){
+                        echo json_encode(value: [
+                            "status" => "success", 
+                            "message" => "Notification has been sent to " . $applicantDetails[0]["name"]
+                        ]);
+                        exit;
+                    }
+                    else{
+                        echo json_encode([
+                            "status" => "error", 
+                            "message" => "Email failed to send"
+                        ]);
+                        exit;
+                    }
                 }
             }
 

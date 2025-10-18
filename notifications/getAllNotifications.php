@@ -15,15 +15,13 @@ $db = new database();
 $conn = $db->connectToDatabase();
 
 
-if($_SERVER["REQUEST_METHOD"] === "POST"){
     try{
-        $id = $_POST["id"] ?? "";
-        $email = $_POST["email"] ?? "";
+        // $id = $_POST["id"] ?? "";
         // $id = 6;
 
-        $query = "SELECT * FROM `notifications` WHERE id = ?";
+        $query = "SELECT * FROM `notifications`";
 
-        $data = $db->select($query, [$id]);
+        $data = $db->select($query, []);
 
         if(count($data) > 0){
             echo json_encode([
@@ -45,12 +43,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         ]);
         exit;
     }
-}
-else{
-    echo json_encode([
-        "status"=>"error",
-        "message"=>"Invalid Request method"
-    ]);
-}
+// }
+// else{
+//     echo json_encode([
+//         "status"=>"error",
+//         "message"=>"Invalid Request method"
+//     ]);
+// }
 
 ?>
