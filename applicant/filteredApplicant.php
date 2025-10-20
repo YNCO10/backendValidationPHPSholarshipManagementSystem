@@ -22,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         // $filter = "Computer Science & IT";
 
         if($filter == "All"){
-            $query = "SELECT `name`, `subject` FROM applicant";
+            $query = "SELECT `name`, `program` FROM applicant";
 
             $data = $db->select($query, []);
 
@@ -41,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 exit;
             }
         }else{
-            $query = "SELECT `name`, `subject` FROM applicant WHERE `subject` = ?";
+            $query = "SELECT `name`, `program` FROM applicant WHERE `program` = ?";
 
             $data = $db->select($query, [$filter]);
 
@@ -54,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             else{
                 echo json_encode([
                     "status" => "error",
-                    "message"=> "Select Failed.(applicant)"
+                    "message"=> "Failed to select applicant program."
                 ]);
             }
         }

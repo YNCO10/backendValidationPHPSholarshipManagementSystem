@@ -27,7 +27,7 @@ $conn = $db->connectToDatabase();
     s.financial_amount,
     s.applicantion_link,
     s.provider_email,
-    s.subject,
+    s.scheme_type,
     GROUP_CONCAT(p.perk_name SEPARATOR ', ') AS perks
     FROM scholarships s
     LEFT JOIN sholarship_perks sp 
@@ -45,7 +45,7 @@ $conn = $db->connectToDatabase();
     s.financial_amount, 
     s.applicantion_link,
     s.provider_email,
-    s.subject;
+    s.scheme_type;
     ";
 
     $tblData = $db->select($query, []);

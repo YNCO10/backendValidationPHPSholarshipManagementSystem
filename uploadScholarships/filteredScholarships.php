@@ -22,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         // $filter = "Computer Science & IT";
 
         if($filter == "All"){
-            $query = "SELECT `name`, `subject` FROM scholarships";
+            $query = "SELECT `name`, `scheme_type` FROM scholarships";
 
             $data = $db->select($query, []);
 
@@ -41,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 exit;
             }
         }else{
-            $query = "SELECT `name`, `subject` FROM scholarships WHERE `subject` = ?";
+            $query = "SELECT `name`, `scheme_type` FROM scholarships WHERE `scheme_type` = ?";
 
             $data = $db->select($query, [$filter]);
 
@@ -54,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             else{
                 echo json_encode([
                     "status" => "error",
-                    "message"=> "Select Failed.(scholarship)"
+                    "message"=> "Failed to select scholarship scheme."
                 ]);
             }
         }

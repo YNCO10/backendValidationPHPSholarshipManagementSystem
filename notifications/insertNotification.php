@@ -22,20 +22,20 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $msg = $_POST["msg"] ?? "";
         $recipientEmail = $_POST["recipientEmail"] ?? "";
 
+        
+
         // get admin id
         $query = "SELECT * FROM `admin` WHERE email = ?";
         $adminDetails = $db->select($query, [$adminEmail]);
 
-        if(count($adminDetails) > 0){
-            $adminID = $adminDetails[0]["id"];
-        }
-        else{
+        if(count($adminDetails) <= 0){
             echo json_encode([
                 "status" => "error", 
                 "message" => "Admin ID not found."
             ]);
             exit;
         }
+        $adminID = $adminDetails[0]["id"];
 
         // get applicant id
         $query = "SELECT * FROM applicant WHERE email = ?";
@@ -54,15 +54,15 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             VALUES (?,?,?,?,?,?)";
 
             $result = $db->execute(
-                $query, 
-                [
-                    $title,
-                    $msg,
-                    $adminID,
-                    $adminDetails[0]["name"],
-                    $applicantDetails[0]["name"],
-                    $recipientEmail
-                ]);
+            $query, 
+            [
+                $title,
+                $msg,
+                $adminID,
+                $adminDetails[0]["name"],
+                $applicantDetails[0]["name"],
+                $recipientEmail
+            ]);
 
             if($result > 0){
                 $applicantID = $applicantDetails[0]["id"];

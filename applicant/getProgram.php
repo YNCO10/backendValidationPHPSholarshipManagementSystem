@@ -15,18 +15,18 @@ $db = new database();
 $conn = $db->connectToDatabase();
 
 try{
-    $query = "SELECT DISTINCT `subject` FROM applicant ORDER BY `subject`";
+    $query = "SELECT DISTINCT `program` FROM applicant ORDER BY `program`";
     
     $result = $conn->query($query);
 
-    $subjects = [];
+    $programs = [];
     while ($row = $result->fetch_assoc()) {
-        $subjects[] = $row['subject'];
+        $programs[] = $row['program'];
     }
 
     echo json_encode([
         "status" => "success",
-        "data"   => $subjects
+        "data"   => $programs
     ]);
 }
 catch(Exception $e){

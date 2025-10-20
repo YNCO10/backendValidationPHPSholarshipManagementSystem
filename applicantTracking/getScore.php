@@ -15,24 +15,22 @@ $db = new database();
 $conn = $db->connectToDatabase();
 
 try{
-    $query = "SELECT DISTINCT `subject` FROM scholarships ORDER BY `subject`";
-    
+    $query ="SELECT score FROM applicant";
+
     $result = $conn->query($query);
 
-    $subjects = [];
+    $scores = [];     // array to hold all scores
     while ($row = $result->fetch_assoc()) {
-        $subjects[] = $row['subject'];
+        $scores[] = $row['score'];
     }
-
     echo json_encode([
-        "status" => "success",
-        "data"   => $subjects
+        "scores" => $scores
     ]);
 }
 catch(Exception $e){
     echo json_encode([
-        "status" => "error",
-        "message"=> "Exception Error: " . $e->getMessage()
+        "status"=>"error",
+        "message"=>"Exception: " . $e->getMessage()
     ]);
 }
 
