@@ -32,7 +32,20 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $uid = $result[0]["id"];
 
         if($status == "ACCEPTED"){
-            $query = "UPDATE applications SET application_status = ? WHERE user_id = ?";
+            //check is applicant is already accepted
+            $query = "SELECT `status` FROM applicant WHERE id = ?";
+            $result = $db->select($query, [$uid]);
+            if(count($result) > 0){
+                if($result[0]["status"] == "ACCEPTED"){
+                    echo json_encode([
+                        "status"=>"error",
+                        "message"=>"Applicant has already been Accepted"
+                    ]);
+                    exit;
+                }
+            }
+            //update status
+            $query = "UPDATE applicant SET `status` = ? WHERE id = ?";
             $result = $db->execute($query, [$status, $uid]);
 
             if($result > 0){
@@ -44,7 +57,21 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             }
         }
         else if($status == "REJECTED"){
-            $query = "UPDATE applications SET application_status = ? WHERE user_id =?";
+            //check is applicant is already rejected
+            $query = "SELECT `status` FROM applicant WHERE id = ?";
+            $result = $db->select($query, [$uid]);
+            if(count($result) > 0){
+                if($result[0]["status"] == "REJECTED"){
+                    echo json_encode([
+                        "status"=>"error",
+                        "message"=>"Applicant has already been Rejected"
+                    ]);
+                    exit;
+                }
+            }
+
+            //update status
+            $query = "UPDATE applicant SET `status` = ? WHERE id = ?";
             $result = $db->execute($query, [$status, $uid]);
 
             if($result > 0){
@@ -56,7 +83,21 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             }
         }
         else if($status == "Reviewed"){
-            $query = "UPDATE applications SET application_status = ? WHERE user_id =?";
+            //check is applicant is already reviewd
+            $query = "SELECT `status` FROM applicant WHERE id = ?";
+            $result = $db->select($query, [$uid]);
+            if(count($result) > 0){
+                if($result[0]["status"] == "Reviewed"){
+                    echo json_encode([
+                        "status"=>"error",
+                        "message"=>"Applicant has already been Reviewed"
+                    ]);
+                    exit;
+                }
+            }
+
+            //update status
+            $query = "UPDATE applicant SET `status` = ? WHERE id = ?";
             $result = $db->execute($query, [$status, $uid]);
 
             if($result > 0){

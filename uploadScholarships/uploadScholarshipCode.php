@@ -82,10 +82,9 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                 `financial_amount`,
                 `applicantion_link`,
                 `provider_email`,
-                `subject`,
                 `scheme_id`
                 ) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
                 $insertedValues = $db->execute(
                     $query, 
@@ -100,7 +99,6 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                         $financialAmount,
                         $link,
                         $providerEmail,
-                        $subject,
                         $schemeID
                     ]
                 );

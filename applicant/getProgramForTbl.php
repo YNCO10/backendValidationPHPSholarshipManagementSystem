@@ -15,19 +15,15 @@ $db = new database();
 $conn = $db->connectToDatabase();
 
 try{
-    $query = "SELECT DISTINCT `program` FROM applicant ORDER BY `program`";
-    
-    $result = $conn->query($query);
 
-    $programs = [];
-    while ($row = $result->fetch_assoc()) {
-        $programs[] = $row['program'];
-    }
+    $query = "SELECT `program` FROM applicant";
+    
+    $programs = $db->select($query, []);
 
     echo json_encode([
-        "status" => "success",
-        "data"   => $programs
+        "data"=>$programs
     ]);
+    
 }
 catch(Exception $e){
     echo json_encode([
