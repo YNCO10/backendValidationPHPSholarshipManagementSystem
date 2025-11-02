@@ -37,6 +37,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         $query ="SELECT
         a.id as applicantID,
         a.`name` as applicant_name,
+        a.email,
         a.income_bracket,
         app.id as applicationID,
         app.application_status,

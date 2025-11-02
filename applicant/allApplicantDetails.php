@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
         // $email = "test11@gmail.com";
         $email = $_POST["email"] ?? "";
-        $query = "SELECT id FROM applicant WHERE email = ?";
+        $query = "SELECT * FROM applicant WHERE email = ?";
 
         $result = $db->select($query, [$email]);
 

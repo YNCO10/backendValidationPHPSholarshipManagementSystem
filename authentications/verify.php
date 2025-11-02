@@ -21,7 +21,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         $isVerified = $db->select($query,[$token]);
 
         if($isVerified > 0){
-            $query = "UPDATE admin SET verified = 1, verify_token = NULL WHERE id = ?";
+            $query = "UPDATE `admin` SET verified = 1, verify_token = NULL WHERE id = ?";
             $db->execute($query,[$isVerified[0]["id"]]);
 
             echo json_encode([

@@ -17,24 +17,22 @@ $conn = $db->connectToDatabase();
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     try{
-        $email = $_POST["email"] ?? "";
-        $query = "SELECT * FROM `notifications` WHERE recipient_email = ?";
+        $uid = $_POST["id"] ?? "";
 
-        $notificationData = $db->select($query, [$email]);
+        $query = "DELETE FROM notifications WHERE id = ?";
+        $data = $db->execute($query, [$uid]);
 
-        if(count($notificationData) > 0){
+        if($data > 0){
             echo json_encode([
-                "status" => "success",
-                "data" => $notificationData
+                "status"=>"success",
+                "message"=>"Notification has been deleted."
             ]);
-            exit;
         }
         else{
             echo json_encode([
-                "status" => "error",
-                "message" => "Notification Data selection failed"
+                "status"=>"error",
+                "message"=>"Failed to delete Notification. Was the ID you gave accurate?"
             ]);
-            exit;
         }
     }
     catch(Exception $e){

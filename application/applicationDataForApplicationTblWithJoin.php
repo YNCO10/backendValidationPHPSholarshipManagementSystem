@@ -14,23 +14,33 @@ require_once "C:/XAMPP/htdocs/BackEnd/scholarshipManagement/dbHandler.php";
 $db = new database();
 $conn = $db->connectToDatabase();
 
+
 try{
-    $query = "SELECT `name`, score FROM applicant ORDER BY score DESC";
+    $rejected = "REJECTED";
 
-    $data = $db->select($query, []);
+    $query = "SELECT 
+    app.*,
+    a.email as applicant_email,
+    a.status
+    FROM applications app
+    JOIN applicant a ON app.user_id = a.id
+    WHERE a.status != ?";
+    $result = $db->select($query, [$rejected]);
 
-    if(count($data) > 0){
+    if(count($result) > 0){
         echo json_encode([
-            "status" => "status",
-            "data"=> $data
+            "status" => "success",
+            "data"=> $result
         ]);
     }
     else{
         echo json_encode([
             "status" => "error",
-            "message"=> "Select Failed."
+            "message"=>"Failed to select application data"
         ]);
     }
+
+    
 }
 catch(Exception $e){
     echo json_encode([
