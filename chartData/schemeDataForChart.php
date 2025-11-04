@@ -25,7 +25,7 @@ try{
     while ($row = $result->fetch_assoc()) {
         $scheme[$row['scheme_type']] = (int)$row['count'];
     }
-    echo json_encode($scheme);
+    echo json_encode(["data"=>$scheme]);
 }
 catch(Exception $e){
     echo json_encode([

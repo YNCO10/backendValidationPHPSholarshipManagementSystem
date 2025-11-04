@@ -25,7 +25,7 @@ try{
     while ($row = $result->fetch_assoc()) {
         $nationalityCounts[$row['nationality']] = (int)$row['count'];
     }
-    echo json_encode($nationalityCounts);
+    echo json_encode(["data"=>$nationalityCounts]);
 }
 catch(Exception $e){
     echo json_encode([

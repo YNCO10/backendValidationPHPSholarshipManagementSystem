@@ -82,9 +82,10 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                 `financial_amount`,
                 `applicantion_link`,
                 `provider_email`,
-                `scheme_id`
+                `scheme_id`,
+                `main_file_path`
                 ) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
                 $insertedValues = $db->execute(
                     $query, 
@@ -99,7 +100,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                         $financialAmount,
                         $link,
                         $providerEmail,
-                        $schemeID
+                        $schemeID,
+                        $mainFilepath
                     ]
                 );
 
@@ -107,7 +109,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
                     if(empty($selectedPerks) || $selectedPerks ==="[]"){
                         echo json_encode([
                         "status"=>"success", 
-                        "message"=>"File uploaded Successfully with no percs."
+                        "message"=>"File uploaded Successfully with no percs.",
+                        "mainFilePath"=>$mainFilepath
                         ]);
                         exit;
                     }

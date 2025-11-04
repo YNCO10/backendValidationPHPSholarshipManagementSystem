@@ -46,6 +46,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         a.school_attended,
         a.gpa,
         a.income_bracket,
+        a.date_registered,
         ass.score AS assessment_score,
         sc.deadline,
         app.date_submitted,

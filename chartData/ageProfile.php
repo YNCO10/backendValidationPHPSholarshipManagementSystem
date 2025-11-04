@@ -32,7 +32,7 @@ try{
     while ($row = $result->fetch_assoc()) {
         $ageProfile[$row['age_group']] = (int)$row['count'];
     }
-    echo json_encode($ageProfile);
+    echo json_encode(["data"=>$ageProfile]);
 }
 catch(Exception $e){
     echo json_encode([

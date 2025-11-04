@@ -30,7 +30,7 @@ try{
     while ($row = $result->fetch_assoc()) {
         $scholarships[$row['name']] = (int)$row['count'];
     }
-    echo json_encode($scholarships);
+    echo json_encode(["data"=>$scholarships]);
 }
 catch(Exception $e){
     echo json_encode([

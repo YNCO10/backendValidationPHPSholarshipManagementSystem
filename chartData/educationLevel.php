@@ -23,7 +23,7 @@ try{
     while ($row = $result->fetch_assoc()) {
         $countryCounts[$row['education_level']] = (int)$row['occurrences'];
     }
-    echo json_encode($countryCounts);
+    echo json_encode(["data"=>$countryCounts]);
 }
 catch(Exception $e){
     echo json_encode([
